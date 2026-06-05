@@ -2,395 +2,494 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🍭 달콤한 수학</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="달콤한 수학">
-<meta name="theme-color" content="#FF69B4">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>🧮 수학 게임</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html,body{min-height:100vh;font-family:'Comic Sans MS',cursive,sans-serif;background:linear-gradient(135deg,#FFE4F0 0%,#FFF0F8 40%,#F0E8FF 100%);}
-@keyframes bounceIn{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
-@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
-#app{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px;position:relative;overflow:hidden;}
-.deco{position:fixed;pointer-events:none;z-index:0;font-size:22px;opacity:0.35;}
-.btn{border:none;cursor:pointer;font-family:inherit;font-weight:800;transition:transform 0.15s;}
-.btn:active{transform:scale(0.94)!important;}
-.start-wrap{width:100%;max-width:500px;z-index:1;animation:bounceIn 0.5s both;}
-.level-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.level-btn{border-radius:20px;padding:18px 12px;text-align:center;color:#fff;box-shadow:0 6px 20px rgba(214,51,132,0.25);}
-.game-wrap{width:100%;max-width:560px;z-index:1;}
-.q-card{background:rgba(255,255,255,0.85);border-radius:28px;padding:28px 20px 24px;box-shadow:0 8px 32px rgba(255,105,180,0.18);border:2px solid rgba(255,105,180,0.2);margin-bottom:20px;}
-.item-box{background:rgba(255,255,255,0.7);border:3px solid rgba(255,105,180,0.3);border-radius:24px;padding:16px 20px;min-width:110px;text-align:center;transition:all 0.2s;}
-.item-box.hl{background:rgba(255,105,180,0.15);border-color:#FF69B4;}
-.emoji-grid{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:120px;margin:0 auto 8px;}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.opt{border-radius:18px;padding:16px 10px;font-size:22px;font-weight:900;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,0.15);}
-.result-card{background:rgba(255,255,255,0.9);border-radius:32px;padding:36px 28px;box-shadow:0 12px 40px rgba(214,51,132,0.2);border:2px solid rgba(255,105,180,0.25);}
-.perfect-msg{background:linear-gradient(135deg,#FFD700,#FFA500);color:#fff;border-radius:20px;padding:14px 20px;font-size:17px;font-weight:900;margin:16px 0;line-height:1.6;}
-.confetti-piece{position:fixed;top:-20px;pointer-events:none;z-index:999;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Apple SD Gothic Neo','Malgun Gothic','Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#1a0520 0%,#420d30 50%,#1a0520 100%);
+  min-height:100vh;display:flex;align-items:flex-start;
+  justify-content:center;padding:20px 14px;
+}
+#app{width:100%;max-width:720px}
+.scr{display:none;flex-direction:column;align-items:center;gap:12px}
+.scr.show{display:flex;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── 학습 화면 ── */
-.learn-wrap{width:100%;max-width:560px;z-index:1;}
-.learn-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:18px;}
-.learn-tab{border-radius:20px;padding:9px 22px;font-size:14px;font-weight:800;cursor:pointer;border:none;font-family:inherit;transition:transform 0.15s;}
-.learn-tab:active{transform:scale(0.95);}
-.learn-card{background:rgba(255,255,255,0.88);border-radius:28px;padding:24px 20px;box-shadow:0 8px 32px rgba(255,105,180,0.16);border:2px solid rgba(255,105,180,0.18);margin-bottom:16px;min-height:260px;}
-.learn-eq{text-align:center;font-size:34px;font-weight:900;color:#D63384;margin-bottom:20px;letter-spacing:4px;}
-.learn-visual{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:flex-start;min-height:100px;padding:8px;}
-.learn-msg{text-align:center;font-size:16px;font-weight:800;color:#D63384;min-height:32px;margin-top:12px;line-height:1.4;}
-.ei{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:2px;}
-.ei .emo{font-size:32px;line-height:1;}
-.ei .num{font-size:11px;font-weight:900;color:#fff;background:#FF69B4;border-radius:8px;padding:1px 5px;min-width:18px;text-align:center;}
-.ei.red .emo{filter:grayscale(0.2);}
-.ei.red::after{content:"✕";position:absolute;top:-4px;right:-4px;font-size:14px;color:#E74C3C;font-weight:900;}
-.ei.gone{opacity:0;transform:scale(0);transition:all 0.4s;}
-.ei.glow .emo{filter:drop-shadow(0 0 6px #56AB2F);}
-@keyframes slideRight{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes zoomIn{from{transform:scale(0.3);opacity:0}50%{transform:scale(1.2)}to{transform:scale(1);opacity:1}}
-.pick-row{display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0;}
-.pick-num{font-size:42px;font-weight:900;color:#D63384;min-width:54px;text-align:center;}
-.pick-btn{width:34px;height:34px;border-radius:50%;border:none;font-size:18px;font-weight:900;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;font-family:inherit;}
+/* ══ HOME ══ */
+.h-logo{font-size:60px;line-height:1}
+.h-title{font-size:32px;font-weight:900;color:#fff;
+  text-shadow:0 0 40px rgba(255,105,180,.6);text-align:center}
+.h-sub{font-size:13px;color:rgba(255,255,255,.4)}
+.stage-grid{display:grid;grid-template-columns:1fr 1fr;
+  gap:11px;width:100%;max-width:480px;margin-top:4px}
+.s-btn{border:none;border-radius:20px;padding:20px 17px 16px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  transition:transform .12s}
+.s-btn:hover{transform:translateY(-2px)}
+.s-btn:active{transform:scale(.94)}
+.s-num{font-size:21px;font-weight:900;color:#fff}
+.s-name{font-size:13px;font-weight:700;color:rgba(255,255,255,.85)}
+.s-range{font-size:11px;color:rgba(255,255,255,.5);margin-top:1px}
+.s-aw{font-size:10px;font-weight:700;color:rgba(255,255,255,.75);
+  background:rgba(0,0,0,.2);border-radius:8px;padding:3px 8px;margin-top:6px}
+.s1{background:linear-gradient(140deg,#ff6bae,#e91e8c);box-shadow:0 6px 22px rgba(233,30,140,.3)}
+.s2{background:linear-gradient(140deg,#f953c6,#9c27b0);box-shadow:0 6px 22px rgba(249,83,198,.3)}
+.s3{background:linear-gradient(140deg,#c2185b,#880e4f);box-shadow:0 6px 22px rgba(194,24,91,.3)}
+.s4{background:linear-gradient(140deg,#ad1457,#6a0f3a);box-shadow:0 6px 22px rgba(173,20,87,.3)}
+
+/* ══ GAME TOP ══ */
+.g-bar{display:flex;align-items:center;justify-content:space-between;width:100%}
+.g-badge{font-size:12px;font-weight:700;color:rgba(255,255,255,.55);
+  background:rgba(255,255,255,.08);padding:5px 14px;border-radius:20px;
+  border:1px solid rgba(255,105,180,.25)}
+.g-cnt{font-size:13px;font-weight:700;color:rgba(255,255,255,.4)}
+.g-hb{width:100%;font-size:11px;font-weight:700;text-align:center;
+  color:rgba(255,255,255,.0);background:rgba(255,105,180,.08);
+  border-radius:10px;padding:5px 12px;transition:all .3s}
+.g-hb.on{color:rgba(255,180,220,.85)}
+.prog-wrap{width:100%;height:6px;background:rgba(255,255,255,.1);
+  border-radius:100px;overflow:hidden}
+.prog-fill{height:100%;border-radius:100px;
+  background:linear-gradient(90deg,#f953c6,#e91e8c);
+  transition:width .5s ease;width:0%}
+
+/* ══ MAIN LAYOUT: hint left + problem right ══ */
+.g-main{display:flex;flex-direction:row;gap:12px;
+  width:100%;align-items:flex-start}
+
+/* ── Hint panel ── */
+.hint-card{
+  width:196px;flex-shrink:0;order:1;
+  background:rgba(255,20,147,.07);
+  border:1px solid rgba(255,105,180,.22);
+  border-radius:18px;padding:14px 14px;
+}
+.hint-tog{
+  width:100%;border:none;border-radius:10px;
+  background:rgba(255,105,180,.18);
+  color:#ffb6e0;font-size:12px;font-weight:800;
+  padding:8px 10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  transition:background .15s;letter-spacing:.2px;
+}
+.hint-tog:hover{background:rgba(255,105,180,.3)}
+.hnt-body{
+  font-size:12px;color:rgba(255,255,255,.72);line-height:1.9;
+  display:none;margin-top:12px;
+  animation:revealHint .25s ease;
+}
+.hnt-body.open{display:block}
+@keyframes revealHint{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.hr{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.hlb{font-size:10px;font-weight:700;color:rgba(255,150,200,.65);min-width:50px}
+.heq{font-size:12.5px;color:rgba(255,255,255,.88)}
+.hunit{font-size:11px;color:rgba(255,180,220,.55);margin-left:2px}
+.harr{text-align:center;font-size:15px;color:rgba(255,105,180,.45);margin:3px 0}
+.hfin{font-size:13px;font-weight:800;color:#ffc0de;
+  border-top:1px solid rgba(255,105,180,.15);padding-top:8px;margin-top:6px}
+.hdots{font-size:14px;line-height:2;word-break:break-all}
+
+/* ── Problem + choices ── */
+.prob-panel{flex:1;order:2;display:flex;flex-direction:column;gap:11px}
+
+.pcard{
+  width:100%;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,105,180,.15);border-radius:20px;
+  padding:28px 18px 22px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.peq{font-size:clamp(30px,6.5vw,52px);font-weight:900;
+  color:#fff;line-height:1.2;letter-spacing:.5px}
+.pop{color:rgba(255,105,180,.4);margin:0 8px;font-weight:300}
+.pq{color:#ff69b4}
+.pline{width:62%;height:2px;background:rgba(255,105,180,.15);
+  border-radius:100px;margin:10px auto}
+.pfb{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;border-radius:20px;
+  pointer-events:none;opacity:0;transition:opacity .15s}
+.pfb.on{opacity:1}
+.pfb.ok{background:rgba(52,211,153,.15)}
+.pfb.ng{background:rgba(248,113,113,.15)}
+.pfb-ico{font-size:48px}
+.pfb-txt{font-size:17px;font-weight:800;color:#fff;margin-top:5px}
+
+/* ── Choices ── */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%}
+.ch{border-radius:15px;border:2px solid rgba(255,105,180,.2);
+  background:rgba(255,255,255,.07);padding:13px 11px;
+  display:flex;align-items:center;gap:9px;cursor:pointer;
+  transition:all .13s;color:#fff;text-align:left}
+.ch:hover:not(:disabled){background:rgba(255,105,180,.15);
+  border-color:rgba(255,105,180,.5);transform:scale(1.03)}
+.ch:active:not(:disabled){transform:scale(.95)}
+.ch:disabled{cursor:default}
+.ch-ltr{font-size:12px;font-weight:800;color:rgba(255,150,200,.65);min-width:14px}
+.ch-val{font-size:clamp(18px,4.5vw,28px);font-weight:900;color:#fff}
+.ch.ok{background:rgba(52,211,153,.22)!important;border-color:#34d399!important}
+.ch.ok .ch-val{color:#34d399!important}
+.ch.ng{background:rgba(248,113,113,.18)!important;border-color:#f87171!important}
+.ch.ng .ch-val{color:#f87171!important}
+
+/* ══ ANIMATIONS ══ */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.shake{animation:shake .3s ease}
+.pop{animation:pop .25s ease}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:560px){
+  .g-main{flex-direction:column}
+  .hint-card{width:100%;order:2}
+  .prob-panel{order:1}
+}
+
+/* ══ RESULT ══ */
+.rcard{width:100%;max-width:480px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,105,180,.15);border-radius:22px;
+  padding:30px 22px 26px;text-align:center}
+.r-ico{font-size:64px;line-height:1;margin-bottom:10px}
+.r-pts{font-size:66px;font-weight:900;color:#ffc0de;line-height:1}
+.r-max{font-size:18px;color:rgba(255,255,255,.3)}
+.r-stars{font-size:26px;letter-spacing:5px;margin:10px 0}
+.r-tag{display:inline-block;padding:7px 22px;border-radius:100px;
+  font-size:13px;font-weight:800;margin:8px 0}
+.tok{background:rgba(52,211,153,.2);color:#34d399;border:1px solid rgba(52,211,153,.3)}
+.tng{background:rgba(248,113,113,.2);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+.r-title{font-size:23px;font-weight:900;color:#fff;margin-bottom:8px}
+.r-msg{font-size:14px;color:rgba(255,255,255,.6);line-height:1.75}
+.rb1{width:100%;max-width:480px;
+  background:linear-gradient(135deg,#f953c6,#e91e8c);
+  border:none;border-radius:15px;padding:17px;font-size:16px;
+  font-weight:800;color:#fff;cursor:pointer;
+  box-shadow:0 6px 20px rgba(249,83,198,.35);
+  transition:transform .1s}
+.rb1:hover{transform:scale(1.02)}
+.rb1:active{transform:scale(.97)}
+.rb2{width:100%;max-width:480px;background:transparent;
+  border:1px solid rgba(255,255,255,.12);border-radius:15px;padding:14px;
+  font-size:14px;font-weight:700;color:rgba(255,255,255,.45);
+  cursor:pointer;transition:all .15s}
+.rb2:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app">
+
+<!-- ══════ HOME ══════ -->
+<div id="home" class="scr show">
+  <div class="h-logo">🧮</div>
+  <div class="h-title">수학 게임</div>
+  <div class="h-sub">단계를 선택해서 시작해요!</div>
+  <div class="stage-grid">
+    <button class="s-btn s1" onclick="go(1)">
+      <div class="s-num">1단계</div>
+      <div class="s-name">한 자리 덧셈</div>
+      <div class="s-range">1 ~ 9</div>
+    </button>
+    <button class="s-btn s2" onclick="go(2)">
+      <div class="s-num">2단계</div>
+      <div class="s-name">두 자리 덧셈</div>
+      <div class="s-range">10 ~ 99</div>
+      <div class="s-aw">💰 80점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s3" onclick="go(3)">
+      <div class="s-num">3단계</div>
+      <div class="s-name">세 자리 덧셈</div>
+      <div class="s-range">100 ~ 999</div>
+      <div class="s-aw">💰 60점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s4" onclick="go(4)">
+      <div class="s-num">4단계</div>
+      <div class="s-name">네 자리 덧셈</div>
+      <div class="s-range">1000 ~ 9999</div>
+      <div class="s-aw">💰 50점 이상 → 용돈</div>
+    </button>
+  </div>
+</div>
+
+<!-- ══════ GAME ══════ -->
+<div id="game" class="scr">
+  <div class="g-bar">
+    <span class="g-badge" id="g-badge">2단계</span>
+    <span class="g-cnt" id="g-cnt">1 / 10</span>
+  </div>
+  <div class="g-hb" id="g-hb">🔥 더 어려운 문제가 시작돼요!</div>
+  <div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
+
+  <div class="g-main">
+
+    <!-- 힌트 패널 (데스크탑: 왼쪽 / 모바일: 아래) -->
+    <div class="hint-card">
+      <button class="hint-tog" id="hint-tog" onclick="toggleHint()">
+        <span>💡</span> 힌트 보기
+      </button>
+      <div class="hnt-body" id="hnt-body"></div>
+    </div>
+
+    <!-- 문제 + 선택지 -->
+    <div class="prob-panel">
+      <div class="pcard" id="pcard">
+        <div class="peq">
+          <span id="na"></span><span class="pop">+</span><span id="nb"></span><span class="pop">=</span><span class="pq">?</span>
+        </div>
+        <div class="pline"></div>
+        <div class="pfb" id="pfb">
+          <div class="pfb-ico" id="pfb-ico"></div>
+          <div class="pfb-txt" id="pfb-txt"></div>
+        </div>
+      </div>
+      <div class="choices" id="choices"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════ RESULT ══════ -->
+<div id="result" class="scr">
+  <div class="rcard">
+    <div class="r-ico" id="r-ico">💖</div>
+    <div class="r-pts" id="r-pts">80</div>
+    <div class="r-max">/ 100점</div>
+    <div class="r-stars" id="r-stars">⭐⭐⭐⭐</div>
+    <div class="r-tag" id="r-tag"></div>
+    <div class="r-title" id="r-title"></div>
+    <div class="r-msg" id="r-msg"></div>
+  </div>
+  <button class="rb1" onclick="replay()">🔄 다시 도전하기</button>
+  <button class="rb2" onclick="goHome()">🏠 다른 단계 선택</button>
+</div>
+
+</div>
 <script>
-var ITEMS=[
-  {e:"🍎",n:"사과"},{e:"🍊",n:"귤"},{e:"🍋",n:"레몬"},{e:"🍇",n:"포도"},
-  {e:"🍓",n:"딸기"},{e:"🥐",n:"크루아상"},{e:"🍫",n:"초콜릿"},
-  {e:"🍬",n:"사탕"},{e:"🍭",n:"막대사탕"},{e:"🍮",n:"젤리"},
-  {e:"🧁",n:"컵케이크"},{e:"🍰",n:"케이크"}
-];
-var LEVELS=[
-  {id:1,name:"🌱 쉬움",sub:"1~9",unit:1,max:9},
-  {id:2,name:"🌿 보통",sub:"10단위",unit:10,max:90},
-  {id:3,name:"🌳 어려움",sub:"100단위",unit:100,max:900},
-  {id:4,name:"⭐ 고수",sub:"1000단위",unit:1000,max:9000}
-];
-var LCOLS=["linear-gradient(135deg,#FFB6C1,#FF69B4)","linear-gradient(135deg,#FFD700,#FFA500)","linear-gradient(135deg,#DDA0DD,#BA55D3)","linear-gradient(135deg,#98FB98,#3CB371)"];
-var CCOLS=["#FF6B9D","#FFD700","#7EC8E3","#FF9F43","#A29BFE","#55EFC4","#FD79A8","#FDCB6E"];
-var QN=10;
-function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function pick(arr){return arr[rnd(0,arr.length-1)];}
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 
-function snd(type){
-  try{
-    var ctx=new(window.AudioContext||window.webkitAudioContext)();
-    function p(f,t,d,v){v=v||0.25;var o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(0.001,t+d);o.start(t);o.stop(t+d+0.01);}
-    var n=ctx.currentTime;
-    if(type==="correct"){p(523,n,0.12);p(659,n+0.12,0.12);p(784,n+0.24,0.25);}
-    else if(type==="wrong"){p(220,n,0.08);p(196,n+0.1,0.3,0.15);}
-    else if(type==="celebrate"){var m=[523,659,784,1047,784,1047,1319,1047,1319];m.forEach(function(f,i){p(f,n+i*0.13,0.18,0.3);});}
-    else if(type==="tick"){p(880,n,0.06,0.1);}
-  }catch(e){}
-}
-
-function makeQ(level){
-  var lv=LEVELS[level-1],steps=lv.max/lv.unit;
-  var a=rnd(1,steps)*lv.unit,b=rnd(1,steps)*lv.unit;
-  var op=Math.random()>0.45?"+":" -";
-  if(op===" -"&&a<b){var t=a;a=b;b=t;}
-  var ans=op==="+"?a+b:a-b;
-  var i1=pick(ITEMS),i2=pick(ITEMS.filter(function(x){return x.e!==i1.e;}));
-  var spread=Math.max(lv.unit*2,Math.floor(ans*0.4));
-  var opts=[ans],tries=0;
-  while(opts.length<4&&tries<200){
-    tries++;
-    var d=lv.unit*rnd(1,Math.max(1,Math.floor(spread/lv.unit)));
-    var c=Math.random()>0.5?ans+d:ans-d;
-    if(c>0&&opts.indexOf(c)===-1)opts.push(c);
+/* ────────────────────────────────────────
+   문제 생성
+   idx 0~4: 쉬운 (단위 배수)
+   idx 5~9: 어려운 (혼합)
+──────────────────────────────────────── */
+function gen(stage,idx){
+  const hard=idx>=5;
+  let a,b;
+  switch(stage){
+    case 1: a=R(1,9);b=R(1,9);break;
+    case 2: a=hard?R(1,9)*10+R(1,9):R(1,9)*10; b=hard?R(1,9)*10+R(1,9):R(1,9)*10; break;
+    case 3: a=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100; b=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100; break;
+    case 4: a=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000; b=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000; break;
   }
-  opts.sort(function(){return Math.random()-0.5;});
-  return{a:a,b:b,op:op,ans:ans,i1:i1,i2:i2,opts:opts};
+  return{a,b,ans:a+b,hard};
 }
 
-function spawnConfetti(){
-  document.querySelectorAll(".confetti-piece").forEach(function(e){e.remove();});
-  for(var i=0;i<60;i++){
-    var d=document.createElement("div");d.className="confetti-piece";
-    var sz=rnd(8,16),circ=Math.random()>0.5;
-    d.style.cssText="left:"+rnd(0,100)+"%;width:"+sz+"px;height:"+(circ?sz:Math.round(sz*0.6))+"px;background:"+CCOLS[i%CCOLS.length]+";border-radius:"+(circ?"50%":"3px")+";transform:rotate("+rnd(0,360)+"deg);animation:confettiFall "+(1.5+Math.random()*2).toFixed(2)+"s "+(Math.random()*2).toFixed(2)+"s ease-in forwards;";
-    document.body.appendChild(d);
+/* ────────────────────────────────────────
+   4지선다 선택지 생성
+──────────────────────────────────────── */
+function makeChoices(ans,stage,hard){
+  const unit=stage===1?1:hard?(stage===2?1:stage===3?10:100):(stage===2?10:stage===3?100:1000);
+  const big=stage===1?1:stage===2?10:stage===3?100:1000;
+  const pool=new Set([ans]);
+  const offs=hard
+    ?[-unit,unit,-big,big,-(big+unit),big+unit,-(big-unit),big-unit,-2*unit,2*unit]
+    :[-big,big,-2*big,2*big,-3*big,3*big,-4*big,4*big];
+  for(const o of offs){
+    if(pool.size>=4)break;
+    const w=ans+o;
+    if(w>0)pool.add(w);
   }
-  setTimeout(function(){document.querySelectorAll(".confetti-piece").forEach(function(e){e.remove();});},5000);
+  for(let i=1;pool.size<4;i++){const w=ans+i*unit;if(!pool.has(w)&&w>0)pool.add(w);}
+  return[...pool].slice(0,4).sort(()=>Math.random()-.5);
 }
 
-function decos(){
-  var emojis=["🌸","🍬","✨","🌸","🍭","💕","✨","🌸"];
-  var tops=[8,15,75,85,10,80,45,55],lefts=[5,90,3,93,48,50,2,95];
-  return emojis.map(function(e,i){return '<span class="deco" style="top:'+tops[i]+'%;left:'+lefts[i]+'%;animation:float '+(2.5+i*0.4)+'s '+(i*0.35)+'s ease-in-out infinite">'+e+'</span>';}).join("");
-}
+/* ────────────────────────────────────────
+   힌트 HTML 생성
+──────────────────────────────────────── */
+function buildHint(a,b,stage,hard){
+  const ans=a+b;
 
-function itemBox(item,count,level,hl){
-  var showGrid=level===1&&count<=9;
-  var cls="item-box"+(hl?" hl":"");
-  var inner="";
-  if(showGrid){
-    var emojis="";for(var i=0;i<count;i++)emojis+='<span style="font-size:28px;line-height:1;display:block;animation:popIn 0.3s '+(i*0.05).toFixed(2)+'s both">'+item.e+'</span>';
-    inner='<div class="emoji-grid">'+emojis+'</div>';
-  }else{
-    inner='<span style="font-size:52px;display:block;margin-bottom:8px;line-height:1">'+item.e+'</span>';
+  if(stage===1){
+    const da='<span style="color:#ff9ecb">'+('●'.repeat(a))+'</span>';
+    const db='<span style="color:#ffd700">'+('●'.repeat(b))+'</span>';
+    return `<div class="hdots">${da} <small style="color:rgba(255,255,255,.4)">${a}개</small><br>+&nbsp;${db} <small style="color:rgba(255,255,255,.4)">${b}개</small></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${a} + ${b} = <b>${ans}</b></div>`;
   }
-  return '<div class="'+cls+'">'+inner+'<div style="font-size:'+(level===1?"22":"28")+'px;font-weight:900;color:#D63384">'+count.toLocaleString()+'</div><div style="font-size:11px;color:#E91E8C;margin-top:2px;font-weight:600;opacity:0.7">'+item.n+'</div></div>';
-}
 
-var S={screen:"start",level:1,qs:[],qi:0,score:0,status:"playing",chosen:null};
-var timer=null;
-
-
-/* ════════════════════════════════
-   학습 화면
-════════════════════════════════ */
-var LN={type:"add",a:7,b:6,i1:ITEMS[0],i2:ITEMS[7]};
-var lTimers=[];
-function lClear(){lTimers.forEach(clearTimeout);lTimers=[];}
-function lat(ms,fn){lTimers.push(setTimeout(fn,ms));}
-
-function setLearn(t){
-  lClear();
-  LN.type=t;
-  if(t==="add"){LN.a=7;LN.b=6;}else{LN.a=13;LN.b=5;}
-  LN.i1=ITEMS[0];LN.i2=ITEMS[7];
-  render();
-  lat(200,playLearnAnim);
-}
-
-function changePick(which,delta){
-  lClear();
-  if(which==="a"){LN.a=Math.max(1,Math.min(LN.type==="add"?9:15,LN.a+delta));}
-  else{LN.b=Math.max(1,Math.min(LN.type==="add"?9:LN.a-1,LN.b+delta));}
-  render();
-  lat(200,playLearnAnim);
-}
-
-function goLearn(){
-  lClear();S.screen="learn";
-  LN={type:"add",a:7,b:6,i1:ITEMS[0],i2:ITEMS[7]};
-  render();
-  lat(200,playLearnAnim);
-}
-
-function renderLearn(){
-  var isAdd=LN.type==="add";
-  var tabA='<button class="btn learn-tab" style="background:'+(isAdd?"linear-gradient(135deg,#FF69B4,#FF1493)":"rgba(255,182,193,0.25)")+';color:'+(isAdd?"#fff":"#D63384")+'" onclick="setLearn(\'add\')">➕ 덧셈</button>';
-  var tabS='<button class="btn learn-tab" style="background:'+(!isAdd?"linear-gradient(135deg,#DDA0DD,#BA55D3)":"rgba(221,160,221,0.25)")+';color:'+(!isAdd?"#fff":"#9C27B0")+'" onclick="setLearn(\'sub\')">➖ 뺄셈</button>';
-
-  var pickA='<div class="pick-row">'
-    +'<button class="pick-btn btn" style="background:#FFB6C1" onclick="changePick(\'a\',-1)">−</button>'
-    +'<span class="pick-num" id="pA">'+LN.a+'</span>'
-    +'<button class="pick-btn btn" style="background:#FF69B4" onclick="changePick(\'a\',1)">+</button>'
-    +'<span style="font-size:28px;font-weight:900;color:#FF1493;margin:0 4px">'+(isAdd?'+':'−')+'</span>'
-    +'<button class="pick-btn btn" style="background:#DDA0DD" onclick="changePick(\'b\',-1)">−</button>'
-    +'<span class="pick-num" id="pB">'+LN.b+'</span>'
-    +'<button class="pick-btn btn" style="background:#BA55D3" onclick="changePick(\'b\',1)">+</button>'
-    +'<span style="font-size:28px;font-weight:900;color:#FF1493;margin:0 4px">= ?</span>'
-    +'</div>';
-
-  return decos()+'<div class="learn-wrap">'
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">'
-    +'<button class="btn" style="background:rgba(255,105,180,0.15);color:#D63384;border-radius:14px;padding:8px 16px;font-size:13px;font-weight:800;border:none;font-family:inherit" onclick="goStart()">← 처음</button>'
-    +'<div class="learn-tabs">'+tabA+tabS+'</div>'
-    +'<div style="width:70px"></div>'
-    +'</div>'
-    +pickA
-    +'<div class="learn-card">'
-    +'<div class="learn-eq" id="leq">'+LN.a+(isAdd?' + ':' − ')+LN.b+' = <span id="lans" style="color:#FF69B4">?</span></div>'
-    +'<div class="learn-visual" id="lvis"></div>'
-    +'<div class="learn-msg" id="lmsg">▶ 아래서 숫자를 바꿔보세요!</div>'
-    +'</div>'
-    +'<div style="display:flex;gap:12px;justify-content:center">'
-    +'<button class="btn" style="background:linear-gradient(135deg,#FF69B4,#FF1493);color:#fff;border-radius:16px;padding:12px 24px;font-size:14px;font-weight:800;border:none;font-family:inherit;box-shadow:0 4px 14px rgba(255,105,180,0.35)" onclick="lClear();playLearnAnim()">▶ 다시 보기</button>'
-    +'</div>'
-    +'</div>';
-}
-
-function makeEmojiItem(emoji,num,cls){
-  var n=num!==undefined?'<span class="num" style="animation:zoomIn 0.3s both">'+num+'</span>':'';
-  return '<div class="ei'+(cls?' '+cls:'')+'"><span class="emo">'+emoji+'</span>'+n+'</div>';
-}
-
-function playLearnAnim(){
-  var vis=document.getElementById('lvis');
-  var msg=document.getElementById('lmsg');
-  var ans=document.getElementById('lans');
-  if(!vis||!msg)return;
-  vis.innerHTML='';msg.textContent='';
-  var isAdd=LN.type==="add";
-  var a=LN.a,b=LN.b,total=isAdd?a+b:a;
-  var e1=LN.i1.e,e2=LN.i2.e;
-
-  if(isAdd){
-    // ── 덧셈 애니메이션 ──
-    // 1: A그룹 등장
-    lat(0,function(){
-      msg.textContent=e1+' 가 '+a+'개 있어요!';
-      var h='';
-      for(var i=0;i<a;i++)h+='<div class="ei" style="animation:popIn 0.3s '+(i*0.08).toFixed(2)+'s both"><span class="emo">'+e1+'</span></div>';
-      vis.innerHTML=h;
-      snd("tick");
-    });
-    // 2: B그룹 등장
-    lat(a*80+600,function(){
-      msg.textContent=e2+' '+b+'개를 더 가져와요!';
-      var h=vis.innerHTML;
-      h+='<div style="font-size:28px;font-weight:900;color:#FF1493;align-self:center;margin:0 4px;animation:bounceIn 0.3s both">+</div>';
-      for(var i=0;i<b;i++)h+='<div class="ei" style="animation:slideRight 0.35s '+(i*0.09).toFixed(2)+'s both"><span class="emo">'+e2+'</span></div>';
-      vis.innerHTML=h;
-      snd("tick");
-    });
-    // 3: 합치기
-    var t3=a*80+b*90+1400;
-    lat(t3,function(){
-      msg.textContent='모두 합쳐서 세어봐요! 🔢';
-      var h='';
-      for(var i=0;i<a;i++)h+='<div class="ei" style="animation:popIn 0.15s '+(i*0.06).toFixed(2)+'s both"><span class="emo">'+e1+'</span><span class="num" style="animation:zoomIn 0.3s '+(i*0.06+0.2).toFixed(2)+'s both">'+(i+1)+'</span></div>';
-      for(var i=0;i<b;i++)h+='<div class="ei" style="animation:popIn 0.15s '+((a+i)*0.06).toFixed(2)+'s both"><span class="emo">'+e2+'</span><span class="num" style="animation:zoomIn 0.3s '+((a+i)*0.06+0.2).toFixed(2)+'s both">'+(a+i+1)+'</span></div>';
-      vis.innerHTML=h;
-    });
-    // 4: 결과
-    lat(t3+(a+b)*60+800,function(){
-      msg.innerHTML='<span style="font-size:22px">'+a+' + '+b+' = <span style="color:#FF1493;font-size:28px">'+( a+b)+'</span> 🎉</span>';
-      if(ans)ans.innerHTML='<span style="animation:bounceIn 0.4s both;display:inline-block;color:#FF1493">'+(a+b)+'</span>';
-      snd("correct");
-    });
-
-  } else {
-    // ── 뺄셈 애니메이션 ──
-    // 1: 전체 등장
-    lat(0,function(){
-      msg.textContent=e1+' 가 '+a+'개 있어요!';
-      var h='';
-      for(var i=0;i<a;i++)h+='<div class="ei" style="animation:popIn 0.3s '+(i*0.07).toFixed(2)+'s both"><span class="emo">'+e1+'</span></div>';
-      vis.innerHTML=h;
-      snd("tick");
-    });
-    // 2: 빼는 것 표시
-    lat(a*70+700,function(){
-      msg.textContent='이 중에서 '+b+'개를 빼볼게요! ✕';
-      var items=vis.querySelectorAll('.ei');
-      for(var i=a-b;i<a;i++){if(items[i])items[i].className='ei red';}
-    });
-    // 3: 사라짐
-    lat(a*70+1700,function(){
-      msg.textContent=b+'개가 사라졌어요!';
-      var items=vis.querySelectorAll('.ei.red');
-      items.forEach(function(el){
-        el.style.animation='popIn 0.4s reverse both';
-        el.style.opacity='0';el.style.transform='scale(0)';el.style.transition='all 0.5s';
-      });
-      snd("wrong");
-    });
-    // 4: 남은 것 세기
-    lat(a*70+2700,function(){
-      msg.textContent='남은 걸 세어봐요! 🔢';
-      var h='';
-      var rem=a-b;
-      for(var i=0;i<rem;i++)h+='<div class="ei glow" style="animation:popIn 0.2s '+(i*0.07).toFixed(2)+'s both"><span class="emo">'+e1+'</span><span class="num" style="animation:zoomIn 0.3s '+(i*0.07+0.2).toFixed(2)+'s both">'+(i+1)+'</span></div>';
-      vis.innerHTML=h;
-    });
-    // 5: 결과
-    lat(a*70+4200,function(){
-      var rem=a-b;
-      msg.innerHTML='<span style="font-size:22px">'+a+' − '+b+' = <span style="color:#FF1493;font-size:28px">'+rem+'</span> 🎉</span>';
-      if(ans)ans.innerHTML='<span style="animation:bounceIn 0.4s both;display:inline-block;color:#FF1493">'+rem+'</span>';
-      snd("correct");
-    });
+  if(stage===2&&!hard){
+    const da=a/10,db=b/10;
+    return `<div class="hr"><span class="hlb">십의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> + <b>${db}</b> = <b>${da+db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da+db} × 10 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} + ${b} = ${ans}</div>`;
   }
-}
-function render(){
-  var app=document.getElementById("app");
-  if(S.screen==="start") app.innerHTML=renderStart();
-  else if(S.screen==="learn") app.innerHTML=renderLearn();
-  else if(S.screen==="game") app.innerHTML=renderGame();
-  else if(S.screen==="result") app.innerHTML=renderResult();
-}
-
-function renderStart(){
-  var btns=LEVELS.map(function(lv,i){
-    return '<button class="btn level-btn" style="background:'+LCOLS[i]+'" onclick="startGame('+lv.id+')"><span style="font-size:28px;display:block;margin-bottom:6px">'+lv.name.split(" ")[0]+'</span><span style="font-size:15px;font-weight:800;display:block">'+lv.name.split(" ").slice(1).join(" ")+'</span><span style="font-size:12px;opacity:0.9;font-weight:600;display:block;margin-top:4px">'+lv.sub+'</span></button>';
-  }).join("");
-  return decos()+'<div class="start-wrap"><div style="text-align:center;margin-bottom:32px"><span style="font-size:64px;animation:float 2s ease-in-out infinite;line-height:1;display:block;margin-bottom:12px">🍭</span><div style="font-size:36px;font-weight:900;color:#D63384;text-shadow:2px 2px 0 rgba(255,105,180,0.3);margin-bottom:6px">달콤한 수학</div><div style="color:#E91E8C;font-size:15px;font-weight:600;opacity:0.8">과일이랑 간식으로 배우는 덧셈 뺄셈! 🍎🍫</div></div><p style="text-align:center;color:#C2185B;font-weight:700;font-size:14px;margin-bottom:16px">단계를 골라봐요!</p><div class="level-grid">'+btns+'</div><p style="text-align:center;margin-top:24px;font-size:13px;color:#E91E8C;opacity:0.7;font-weight:600">문제는 '+QN+'개 · 덧셈과 뺄셈 💪</p><button class=\"btn\" style=\"display:block;margin:18px auto 0;background:linear-gradient(135deg,#FFD700,#FFA500);color:#fff;border-radius:16px;padding:12px 32px;font-size:15px;font-weight:900;border:none;font-family:inherit;box-shadow:0 4px 14px rgba(255,165,0,0.35)\" onclick=\"goLearn()\">📚 덧셈 뺄셈 배우기</button></div>';
-}
-
-function renderGame(){
-  var q=S.qs[S.qi];
-  var hl=S.status==="correct";
-  var pct=Math.round((S.qi/QN)*100);
-  var optBtns=q.opts.map(function(opt){
-    var bg="linear-gradient(135deg,#FFB6C1,#FF8FAB)",col="#fff",sc="";
-    if(S.chosen!==null){
-      if(opt===q.ans){bg="linear-gradient(135deg,#A8E063,#56AB2F)";}
-      else if(opt===S.chosen){bg="linear-gradient(135deg,#FF6B6B,#EE0979)";}
-      else{bg="rgba(255,200,220,0.4)";col="rgba(233,30,140,0.5)";}
-      if(opt===q.ans)sc="transform:scale(1.04);";
-    }
-    return '<button class="btn opt" style="background:'+bg+';color:'+col+';box-shadow:0 4px 16px rgba(255,105,180,0.25);'+sc+'" onclick="answer('+opt+')">'+opt.toLocaleString()+'</button>';
-  }).join("");
-  var feedback="";
-  if(S.status!=="playing"){
-    feedback='<div style="text-align:center;margin-top:18px;animation:bounceIn 0.3s both">';
-    if(S.status==="correct")feedback+='<span style="font-size:32px">🎉</span><span style="font-size:22px;font-weight:900;color:#27AE60"> 정답이에요!</span><span style="font-size:32px"> ✨</span>';
-    else feedback+='<span style="font-size:32px">😅</span><span style="font-size:18px;font-weight:800;color:#E74C3C"> 정답은 <span style="font-size:24px;color:#D63384">'+q.ans.toLocaleString()+'</span> 이에요!</span>';
-    feedback+='</div>';
+  if(stage===2&&hard){
+    const ta=Math.floor(a/10),oa=a%10,tb=Math.floor(b/10),ob=b%10;
+    const ts=(ta+tb)*10,os=oa+ob;
+    return `<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta}+${tb}=<b>${ta+tb}</b></span><span class="hunit">→${ts}</span></div>
+      <div class="hr"><span class="hlb">일의 자리</span><span class="heq">${oa}+${ob}=<b>${os}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${ts} + ${os} = ${ans}</div>`;
   }
-  var cardAnim=S.status==="correct"?"animation:pulse 0.35s both":S.status==="wrong"?"animation:shake 0.4s both":"";
-  return decos()+'<div class="game-wrap"><div style="display:flex;align-items:center;gap:10px;margin-bottom:16px"><div style="flex:1;height:12px;background:rgba(255,105,180,0.2);border-radius:6px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,#FF69B4,#FF1493);border-radius:6px;transition:width 0.4s"></div></div><span style="font-size:13px;font-weight:800;color:#D63384;white-space:nowrap">'+(S.qi+1)+'/'+QN+'</span><span style="background:#FF69B4;color:#fff;border-radius:20px;padding:3px 12px;font-size:13px;font-weight:900">⭐'+S.score+'</span></div><div class="q-card" style="'+cardAnim+'"><div style="text-align:center;margin-bottom:20px"><span style="background:linear-gradient(90deg,#FF69B4,#FF1493);color:#fff;border-radius:20px;padding:4px 16px;font-size:12px;font-weight:800">'+LEVELS[S.level-1].name+'</span></div><div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">'+itemBox(q.i1,q.a,S.level,hl)+'<div style="font-size:42px;font-weight:900;color:#FF1493;line-height:1">'+q.op+'</div>'+itemBox(q.i2,q.b,S.level,hl)+'<div style="font-size:38px;font-weight:900;color:#C2185B;line-height:1">=</div><div style="background:linear-gradient(135deg,#FFE4F0,#FFF0F8);border:3px dashed #FF69B4;border-radius:20px;padding:14px 22px;text-align:center;min-width:90px"><span style="font-size:38px;font-weight:900;color:#FF69B4">?</span></div></div>'+feedback+'</div><div class="opts">'+optBtns+'</div></div>';
-}
 
-function renderResult(){
-  var perf=S.score===QN;
-  var stars="";for(var i=0;i<4;i++)stars+='<span style="font-size:24px">'+(S.score>i*2.5?"⭐":"☆")+'</span>';
-  var inner="";
-  if(perf){
-    inner='<span style="font-size:72px;animation:float 1.5s ease-in-out infinite;line-height:1;display:block;margin-bottom:12px">🏆</span><div style="font-size:30px;font-weight:900;color:#D63384;margin-bottom:6px">완벽해요!!</div><div style="font-size:42px;font-weight:900;color:#FF1493;margin-bottom:8px">100점 🌟</div><div class="perfect-msg">🎉 엄마 아빠한테<br>용돈 받으러 가세요! 💰✨</div><div style="font-size:14px;color:#E91E8C;font-weight:600;opacity:0.8">'+QN+'문제 모두 맞혔어요! 정말 대단해요! 👏</div>';
-  }else{
-    var emoji=S.score>=8?"🥳":S.score>=5?"😊":"😢";
-    var msg=S.score>=8?"잘했어요!":S.score>=5?"괜찮아요!":"다시 도전!";
-    inner='<div style="font-size:60px;margin-bottom:8px;line-height:1">'+emoji+'</div><div style="font-size:24px;font-weight:900;color:#D63384;margin-bottom:12px">'+msg+'</div><div style="font-size:52px;font-weight:900;color:#FF1493;margin-bottom:4px">'+S.score+'<span style="font-size:24px;color:#E91E8C;opacity:0.6">/'+QN+'</span></div><div style="margin-bottom:16px">'+stars+'</div>'+(S.score<QN?'<p style="color:#C2185B;font-size:13px;font-weight:600;margin-bottom:4px;opacity:0.8">100점 맞으면 용돈 받을 수 있어요! 💰<br>조금만 더 화이팅!</p>':"");
+  if(stage===3&&!hard){
+    const da=a/100,db=b/100;
+    return `<div class="hr"><span class="hlb">백의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> + <b>${db}</b> = <b>${da+db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da+db} × 100 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} + ${b} = ${ans}</div>`;
   }
-  return decos()+'<div style="width:100%;max-width:480px;z-index:1;animation:bounceIn 0.6s both;text-align:center"><div class="result-card">'+inner+'<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px"><button class="btn" style="background:linear-gradient(135deg,#FF69B4,#FF1493);color:#fff;border-radius:16px;padding:12px 24px;font-size:15px;box-shadow:0 4px 16px rgba(255,105,180,0.35)" onclick="startGame('+S.level+')">🔄 다시 도전!</button><button class="btn" style="background:linear-gradient(135deg,#DDA0DD,#BA55D3);color:#fff;border-radius:16px;padding:12px 24px;font-size:15px;box-shadow:0 4px 16px rgba(186,85,211,0.35)" onclick="goStart()">🏠 단계 선택</button></div></div></div>';
+  if(stage===3&&hard){
+    const ha=Math.floor(a/100),ta=Math.floor((a%100)/10);
+    const hb=Math.floor(b/100),tb=Math.floor((b%100)/10);
+    const hs=(ha+hb)*100,ts=(ta+tb)*10;
+    return `<div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha}+${hb}=<b>${ha+hb}</b></span><span class="hunit">→${hs}</span></div>
+      <div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta}+${tb}=<b>${ta+tb}</b></span><span class="hunit">→${ts}</span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${hs} + ${ts} = ${ans}</div>`;
+  }
+
+  if(stage===4&&!hard){
+    const da=a/1000,db=b/1000;
+    return `<div class="hr"><span class="hlb">천의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> + <b>${db}</b> = <b>${da+db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da+db} × 1000 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} + ${b} = ${ans}</div>`;
+  }
+  if(stage===4&&hard){
+    const tha=Math.floor(a/1000),ha=Math.floor((a%1000)/100);
+    const thb=Math.floor(b/1000),hb=Math.floor((b%1000)/100);
+    const ths=(tha+thb)*1000,hs=(ha+hb)*100;
+    return `<div class="hr"><span class="hlb">천의 자리</span><span class="heq">${tha}+${thb}=<b>${tha+thb}</b></span><span class="hunit">→${ths}</span></div>
+      <div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha}+${hb}=<b>${ha+hb}</b></span><span class="hunit">→${hs}</span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${ths} + ${hs} = ${ans}</div>`;
+  }
+  return '';
 }
 
-function startGame(lvl){
-  snd("tick");clearTimeout(timer);
-  S={screen:"game",level:lvl,qs:[],qi:0,score:0,status:"playing",chosen:null};
-  for(var i=0;i<QN;i++)S.qs.push(makeQ(lvl));
-  render();
+/* ── 게임 상태 ── */
+let stage=1,probs=[],cur=0,score=0,canAns=true;
+
+function go(s){
+  stage=s;cur=0;score=0;canAns=true;
+  probs=Array.from({length:10},(_,i)=>gen(s,i));
+  document.getElementById('g-badge').textContent=s+'단계';
+  document.getElementById('prog').style.width='0%';
+  document.getElementById('g-hb').className='g-hb';
+  showScr('game');
+  loadQ();
 }
 
-function answer(opt){
-  if(S.status!=="playing")return;
-  var q=S.qs[S.qi];
-  var ok=opt===q.ans;
-  snd(ok?"correct":"wrong");
-  S.chosen=opt;S.status=ok?"correct":"wrong";
-  if(ok)S.score++;
-  render();
-  clearTimeout(timer);
-  timer=setTimeout(function(){
-    if(S.qi+1>=QN){
-      var perf=S.score===QN;
-      S.screen="result";render();
-      if(perf){spawnConfetti();setTimeout(function(){snd("celebrate");},400);}
-    }else{
-      S.qi++;S.status="playing";S.chosen=null;render();
-    }
-  },1300);
+function loadQ(){
+  const p=probs[cur];
+  document.getElementById('na').textContent=p.a;
+  document.getElementById('nb').textContent=p.b;
+  document.getElementById('g-cnt').textContent=(cur+1)+' / 10';
+
+  // 힌트 (매 문제마다 숨긴 상태로 초기화)
+  document.getElementById('hnt-body').innerHTML=buildHint(p.a,p.b,stage,p.hard);
+  document.getElementById('hnt-body').classList.remove('open');
+  document.getElementById('hint-tog').innerHTML='<span>💡</span> 힌트 보기';
+
+  // 선택지 생성
+  const choices=makeChoices(p.ans,stage,p.hard);
+  const grid=document.getElementById('choices');
+  grid.innerHTML='';
+  ['A','B','C','D'].forEach((ltr,i)=>{
+    const btn=document.createElement('button');
+    btn.className='ch';btn.dataset.val=choices[i];
+    btn.innerHTML=`<span class="ch-ltr">${ltr}</span><span class="ch-val">${choices[i]}</span>`;
+    btn.onclick=()=>pick(choices[i],btn);
+    grid.appendChild(btn);
+  });
+
+  // 카드 초기화
+  document.getElementById('pcard').className='pcard';
+  document.getElementById('pfb').className='pfb';
+
+  // 6번째 문제 알림
+  if(cur===5&&stage>1){
+    const hb=document.getElementById('g-hb');
+    hb.className='g-hb on';
+    setTimeout(()=>hb.className='g-hb',2600);
+  }
+  canAns=true;
 }
 
-function goStart(){
-  clearTimeout(timer);
-  document.querySelectorAll(".confetti-piece").forEach(function(e){e.remove();});
-  S={screen:"start",level:1,qs:[],qi:0,score:0,status:"playing",chosen:null};
-  render();
+function pick(val,btn){
+  if(!canAns)return;
+  canAns=false;
+  const p=probs[cur];
+  const ok=val===p.ans;
+  if(ok)score+=10;
+
+  // 프로그레스
+  document.getElementById('prog').style.width=((cur+1)/10*100)+'%';
+
+  // 버튼 상태
+  document.querySelectorAll('.ch').forEach(b=>{
+    b.disabled=true;
+    if(+b.dataset.val===p.ans)b.classList.add('ok');
+  });
+  if(!ok)btn.classList.add('ng');
+
+  // 카드 피드백
+  const pcard=document.getElementById('pcard');
+  const pfb=document.getElementById('pfb');
+  document.getElementById('pfb-ico').textContent=ok?'✅':'❌';
+  document.getElementById('pfb-txt').textContent=ok?'+10점!':'정답: '+p.ans;
+  pfb.className='pfb on '+(ok?'ok':'ng');
+  pcard.classList.add(ok?'pop':'shake');
+
+  setTimeout(()=>{cur++;if(cur>=10)showResult();else loadQ();},1300);
 }
 
-render();
+/* ── 결과 ── */
+function showResult(){
+  const stars=Math.round(score/20);
+  document.getElementById('r-pts').textContent=score;
+  document.getElementById('r-stars').textContent='⭐'.repeat(stars)+'☆'.repeat(5-stars);
+  const r=getResult(stage,score);
+  document.getElementById('r-ico').textContent=r.ico;
+  const tag=document.getElementById('r-tag');
+  tag.textContent=r.tag;tag.className='r-tag '+(r.rew?'tok':'tng');
+  document.getElementById('r-title').textContent=r.title;
+  document.getElementById('r-msg').innerHTML=r.msg;
+  showScr('result');
+}
+
+function getResult(s,sc){
+  if(s===1){
+    if(sc>=80)return{ico:'🎉',tag:'🌟 훌륭해요!',title:'한 자리 덧셈 완료!',msg:'정말 잘했어요! 2단계도 도전해봐요! 💪',rew:true};
+    return{ico:'😊',tag:'👍 잘했어요!',title:'조금 더 연습해봐요!',msg:'다시 도전해서 2단계에 도전해봐요!',rew:false};
+  }
+  const TH={2:80,3:60,4:50};
+  const th=TH[s];
+  if(sc>=th)return{ico:'💰',tag:'💰 용돈 받기!',rew:true,title:'대단해요!',
+    msg:`<b style="color:#ffc0de;font-size:16px">${sc}점</b> 달성! 기준 ${th}점 이상이에요!<br><br>📣 엄마 아빠한테 이 화면을 보여주고 용돈 받아요! 🎊`};
+  const pu=[
+    {ico:'🎤',tag:'🎤 장기자랑!',title:'장기자랑 시간!',msg:'엄마 아빠 앞에서 노래나 춤을 보여줘요! 🎵'},
+    {ico:'💆',tag:'💆 안마해주기!',title:'안마 쿠폰 발동!',msg:'엄마 아빠 어깨를 주물러 드려요! 💪'}
+  ][Math.random()<.5?0:1];
+  return{...pu,rew:false,
+    msg:pu.msg+`<br><br><small style="color:rgba(255,255,255,.4)">이번 점수: ${sc}점 | ${th}점 이상이면 용돈 받을 수 있어요!</small>`};
+}
+
+function toggleHint(){
+  const body=document.getElementById('hnt-body');
+  const btn=document.getElementById('hint-tog');
+  const open=body.classList.toggle('open');
+  btn.innerHTML=open?'<span>🙈</span> 힌트 숨기기':'<span>💡</span> 힌트 보기';
+}
+function replay(){go(stage);}
+function goHome(){showScr('home');}
+function showScr(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('show'));
+  document.getElementById(id).classList.add('show');
+}
 </script>
 </body>
 </html>
