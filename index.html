@@ -115,22 +115,46 @@ body{
 .pfb-ico{font-size:48px}
 .pfb-txt{font-size:17px;font-weight:800;color:#fff;margin-top:5px}
 
-/* ── Choices ── */
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%}
+/* ── Choices: wide single-column ── */
+.choices{display:flex;flex-direction:column;gap:9px;width:100%}
 .ch{border-radius:15px;border:2px solid rgba(255,105,180,.2);
-  background:rgba(255,255,255,.07);padding:13px 11px;
-  display:flex;align-items:center;gap:9px;cursor:pointer;
-  transition:all .13s;color:#fff;text-align:left}
+  background:rgba(255,255,255,.07);padding:14px 18px;
+  display:flex;align-items:center;gap:14px;cursor:pointer;
+  transition:all .13s;color:#fff;text-align:left;width:100%}
 .ch:hover:not(:disabled){background:rgba(255,105,180,.15);
-  border-color:rgba(255,105,180,.5);transform:scale(1.03)}
-.ch:active:not(:disabled){transform:scale(.95)}
+  border-color:rgba(255,105,180,.5)}
+.ch:active:not(:disabled){transform:scale(.98)}
 .ch:disabled{cursor:default}
-.ch-ltr{font-size:12px;font-weight:800;color:rgba(255,150,200,.65);min-width:14px}
-.ch-val{font-size:clamp(18px,4.5vw,28px);font-weight:900;color:#fff}
+.ch-ltr{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,105,180,.18);border:1.5px solid rgba(255,150,200,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:rgba(255,180,210,.85)}
+.ch-val{font-size:clamp(19px,4.5vw,28px);font-weight:900;color:#fff}
+.ch-ico{margin-left:auto;font-size:18px;opacity:0;transition:opacity .15s;flex-shrink:0}
 .ch.ok{background:rgba(52,211,153,.22)!important;border-color:#34d399!important}
 .ch.ok .ch-val{color:#34d399!important}
+.ch.ok .ch-ltr{background:#34d399!important;border-color:#34d399!important;color:#fff!important}
+.ch.ok .ch-ico{opacity:1!important;color:#34d399}
 .ch.ng{background:rgba(248,113,113,.18)!important;border-color:#f87171!important}
 .ch.ng .ch-val{color:#f87171!important}
+.ch.ng .ch-ltr{background:#f87171!important;border-color:#f87171!important;color:#fff!important}
+.ch.ng .ch-ico{opacity:1!important;color:#f87171}
+
+/* ── 뺄셈 단계 색상 ── */
+.s5{background:linear-gradient(140deg,#4fc3f7,#0288d1);box-shadow:0 6px 22px rgba(2,136,209,.3)}
+.s6{background:linear-gradient(140deg,#29b6f6,#0277bd);box-shadow:0 6px 22px rgba(41,182,246,.3)}
+.s7{background:linear-gradient(140deg,#26c6da,#00838f);box-shadow:0 6px 22px rgba(0,172,193,.3)}
+.s8{background:linear-gradient(140deg,#00acc1,#004d58);box-shadow:0 6px 22px rgba(0,172,193,.3)}
+
+/* ── 섹션 구분 ── */
+.sec-div{
+  width:100%;max-width:480px;
+  display:flex;align-items:center;gap:10px;
+  font-size:12px;font-weight:800;letter-spacing:.06em;
+  color:rgba(255,255,255,.42);margin-top:8px;
+}
+.sec-div::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 
 /* ══ ANIMATIONS ══ */
 @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
@@ -182,6 +206,8 @@ body{
   <div class="h-logo">🧮</div>
   <div class="h-title">수학 게임</div>
   <div class="h-sub">단계를 선택해서 시작해요!</div>
+
+  <div class="sec-div">➕ 덧셈</div>
   <div class="stage-grid">
     <button class="s-btn s1" onclick="go(1)">
       <div class="s-num">1단계</div>
@@ -203,6 +229,33 @@ body{
     <button class="s-btn s4" onclick="go(4)">
       <div class="s-num">4단계</div>
       <div class="s-name">네 자리 덧셈</div>
+      <div class="s-range">1000 ~ 9999</div>
+      <div class="s-aw">💰 50점 이상 → 용돈</div>
+    </button>
+  </div>
+
+  <div class="sec-div">➖ 뺄셈</div>
+  <div class="stage-grid">
+    <button class="s-btn s5" onclick="go(5)">
+      <div class="s-num">5단계</div>
+      <div class="s-name">한 자리 뺄셈</div>
+      <div class="s-range">1 ~ 9</div>
+    </button>
+    <button class="s-btn s6" onclick="go(6)">
+      <div class="s-num">6단계</div>
+      <div class="s-name">두 자리 뺄셈</div>
+      <div class="s-range">10 ~ 99</div>
+      <div class="s-aw">💰 80점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s7" onclick="go(7)">
+      <div class="s-num">7단계</div>
+      <div class="s-name">세 자리 뺄셈</div>
+      <div class="s-range">100 ~ 999</div>
+      <div class="s-aw">💰 60점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s8" onclick="go(8)">
+      <div class="s-num">8단계</div>
+      <div class="s-name">네 자리 뺄셈</div>
       <div class="s-range">1000 ~ 9999</div>
       <div class="s-aw">💰 50점 이상 → 용돈</div>
     </button>
@@ -232,7 +285,7 @@ body{
     <div class="prob-panel">
       <div class="pcard" id="pcard">
         <div class="peq">
-          <span id="na"></span><span class="pop">+</span><span id="nb"></span><span class="pop">=</span><span class="pq">?</span>
+          <span id="na"></span><span class="pop" id="op-sign">+</span><span id="nb"></span><span class="pop">=</span><span class="pq">?</span>
         </div>
         <div class="pline"></div>
         <div class="pfb" id="pfb">
@@ -267,27 +320,52 @@ const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 
 /* ────────────────────────────────────────
    문제 생성
-   idx 0~4: 쉬운 (단위 배수)
-   idx 5~9: 어려운 (혼합)
+   idx 0~4: 쉬운 / idx 5~9: 어려운
+   stage 1~4: 덧셈 / stage 5~8: 뺄셈
 ──────────────────────────────────────── */
 function gen(stage,idx){
   const hard=idx>=5;
   let a,b;
-  switch(stage){
-    case 1: a=R(1,9);b=R(1,9);break;
-    case 2: a=hard?R(1,9)*10+R(1,9):R(1,9)*10; b=hard?R(1,9)*10+R(1,9):R(1,9)*10; break;
-    case 3: a=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100; b=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100; break;
-    case 4: a=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000; b=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000; break;
+
+  if(stage<=4){
+    /* 덧셈 */
+    switch(stage){
+      case 1:a=R(1,9);b=R(1,9);break;
+      case 2:a=hard?R(1,9)*10+R(1,9):R(1,9)*10;b=hard?R(1,9)*10+R(1,9):R(1,9)*10;break;
+      case 3:a=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100;b=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100;break;
+      case 4:a=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000;b=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000;break;
+    }
+    return{a,b,ans:a+b,hard};
+  } else {
+    /* 뺄셈 — 받아내림 없이 생성 (힌트 자릿수 분해 정확성 보장) */
+    switch(stage){
+      case 5:
+        a=R(1,9);b=R(0,a);
+        break;
+      case 6:
+        if(!hard){a=R(2,9)*10;b=R(1,a/10-1)*10;}
+        else{const ta=R(2,9),oa=R(0,9),tb=R(1,ta-1),ob=R(0,oa);a=ta*10+oa;b=tb*10+ob;}
+        break;
+      case 7:
+        if(!hard){a=R(2,9)*100;b=R(1,a/100-1)*100;}
+        else{const ha=R(2,9),ta=R(1,9),hb=R(1,ha-1),tb=R(0,ta);a=ha*100+ta*10;b=hb*100+tb*10;}
+        break;
+      case 8:
+        if(!hard){a=R(2,9)*1000;b=R(1,a/1000-1)*1000;}
+        else{const tha=R(2,9),ha=R(1,9),thb=R(1,tha-1),hb=R(0,ha);a=tha*1000+ha*100;b=thb*1000+hb*100;}
+        break;
+    }
+    return{a,b,ans:a-b,hard};
   }
-  return{a,b,ans:a+b,hard};
 }
 
 /* ────────────────────────────────────────
    4지선다 선택지 생성
 ──────────────────────────────────────── */
 function makeChoices(ans,stage,hard){
-  const unit=stage===1?1:hard?(stage===2?1:stage===3?10:100):(stage===2?10:stage===3?100:1000);
-  const big=stage===1?1:stage===2?10:stage===3?100:1000;
+  const s=stage<=4?stage:stage-4; /* 뺄셈 단계를 1~4로 정규화 */
+  const unit=s===1?1:hard?(s===2?1:s===3?10:100):(s===2?10:s===3?100:1000);
+  const big=s===1?1:s===2?10:s===3?100:1000;
   const pool=new Set([ans]);
   const offs=hard
     ?[-unit,unit,-big,big,-(big+unit),big+unit,-(big-unit),big-unit,-2*unit,2*unit]
@@ -295,16 +373,17 @@ function makeChoices(ans,stage,hard){
   for(const o of offs){
     if(pool.size>=4)break;
     const w=ans+o;
-    if(w>0)pool.add(w);
+    if(w>=0)pool.add(w); /* 뺄셈 결과 0 허용 */
   }
-  for(let i=1;pool.size<4;i++){const w=ans+i*unit;if(!pool.has(w)&&w>0)pool.add(w);}
+  for(let i=1;pool.size<4;i++){const w=ans+i*unit;if(!pool.has(w)&&w>=0)pool.add(w);}
   return[...pool].slice(0,4).sort(()=>Math.random()-.5);
 }
 
 /* ────────────────────────────────────────
-   힌트 HTML 생성
+   힌트 HTML 생성 (덧셈)
 ──────────────────────────────────────── */
 function buildHint(a,b,stage,hard){
+  if(stage>=5)return buildHintSub(a,b,stage,hard);
   const ans=a+b;
 
   if(stage===1){
@@ -314,7 +393,6 @@ function buildHint(a,b,stage,hard){
       <div class="harr">↓</div>
       <div class="hfin">${a} + ${b} = <b>${ans}</b></div>`;
   }
-
   if(stage===2&&!hard){
     const da=a/10,db=b/10;
     return `<div class="hr"><span class="hlb">십의 자리</span></div>
@@ -331,7 +409,6 @@ function buildHint(a,b,stage,hard){
       <div class="harr">↓</div>
       <div class="hfin">${ts} + ${os} = ${ans}</div>`;
   }
-
   if(stage===3&&!hard){
     const da=a/100,db=b/100;
     return `<div class="hr"><span class="hlb">백의 자리</span></div>
@@ -349,7 +426,6 @@ function buildHint(a,b,stage,hard){
       <div class="harr">↓</div>
       <div class="hfin">${hs} + ${ts} = ${ans}</div>`;
   }
-
   if(stage===4&&!hard){
     const da=a/1000,db=b/1000;
     return `<div class="hr"><span class="hlb">천의 자리</span></div>
@@ -364,6 +440,74 @@ function buildHint(a,b,stage,hard){
     const ths=(tha+thb)*1000,hs=(ha+hb)*100;
     return `<div class="hr"><span class="hlb">천의 자리</span><span class="heq">${tha}+${thb}=<b>${tha+thb}</b></span><span class="hunit">→${ths}</span></div>
       <div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha}+${hb}=<b>${ha+hb}</b></span><span class="hunit">→${hs}</span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${ths} + ${hs} = ${ans}</div>`;
+  }
+  return '';
+}
+
+/* ────────────────────────────────────────
+   힌트 HTML 생성 (뺄셈)
+──────────────────────────────────────── */
+function buildHintSub(a,b,stage,hard){
+  const ans=a-b;
+
+  if(stage===5){
+    const da='<span style="color:#7dd3fc">'+('●'.repeat(a))+'</span>';
+    const dr=ans>0?'<span style="color:#86efac">'+('●'.repeat(ans))+'</span>':'<span style="color:rgba(255,255,255,.4)">(없음)</span>';
+    return `<div class="hdots">${da} <small style="color:rgba(255,255,255,.4)">${a}개</small></div>
+      <div class="harr">−${b}개 제거</div>
+      <div class="hdots">${dr} <small style="color:rgba(255,255,255,.4)">${ans}개 남음</small></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${a} − ${b} = <b>${ans}</b></div>`;
+  }
+  if(stage===6&&!hard){
+    const da=a/10,db=b/10;
+    return `<div class="hr"><span class="hlb">십의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> − <b>${db}</b> = <b>${da-db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da-db} × 10 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} − ${b} = ${ans}</div>`;
+  }
+  if(stage===6&&hard){
+    const ta=Math.floor(a/10),oa=a%10,tb=Math.floor(b/10),ob=b%10;
+    const ts=(ta-tb)*10,os=oa-ob;
+    return `<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta}−${tb}=<b>${ta-tb}</b></span><span class="hunit">→${ts}</span></div>
+      <div class="hr"><span class="hlb">일의 자리</span><span class="heq">${oa}−${ob}=<b>${os}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${ts} + ${os} = ${ans}</div>`;
+  }
+  if(stage===7&&!hard){
+    const da=a/100,db=b/100;
+    return `<div class="hr"><span class="hlb">백의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> − <b>${db}</b> = <b>${da-db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da-db} × 100 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} − ${b} = ${ans}</div>`;
+  }
+  if(stage===7&&hard){
+    const ha=Math.floor(a/100),ta=Math.floor((a%100)/10);
+    const hb=Math.floor(b/100),tb=Math.floor((b%100)/10);
+    const hs=(ha-hb)*100,ts=(ta-tb)*10;
+    return `<div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha}−${hb}=<b>${ha-hb}</b></span><span class="hunit">→${hs}</span></div>
+      <div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta}−${tb}=<b>${ta-tb}</b></span><span class="hunit">→${ts}</span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${hs} + ${ts} = ${ans}</div>`;
+  }
+  if(stage===8&&!hard){
+    const da=a/1000,db=b/1000;
+    return `<div class="hr"><span class="hlb">천의 자리</span></div>
+      <div class="hr"><span class="heq"><b>${da}</b> − <b>${db}</b> = <b>${da-db}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hr"><span class="heq">${da-db} × 1000 = <b>${ans}</b></span></div>
+      <div class="hfin">${a} − ${b} = ${ans}</div>`;
+  }
+  if(stage===8&&hard){
+    const tha=Math.floor(a/1000),ha=Math.floor((a%1000)/100);
+    const thb=Math.floor(b/1000),hb=Math.floor((b%1000)/100);
+    const ths=(tha-thb)*1000,hs=(ha-hb)*100;
+    return `<div class="hr"><span class="hlb">천의 자리</span><span class="heq">${tha}−${thb}=<b>${tha-thb}</b></span><span class="hunit">→${ths}</span></div>
+      <div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha}−${hb}=<b>${ha-hb}</b></span><span class="hunit">→${hs}</span></div>
       <div class="harr">↓</div>
       <div class="hfin">${ths} + ${hs} = ${ans}</div>`;
   }
@@ -387,31 +531,32 @@ function loadQ(){
   const p=probs[cur];
   document.getElementById('na').textContent=p.a;
   document.getElementById('nb').textContent=p.b;
+  document.getElementById('op-sign').textContent=stage>=5?'−':'+';
   document.getElementById('g-cnt').textContent=(cur+1)+' / 10';
 
-  // 힌트 (매 문제마다 숨긴 상태로 초기화)
+  /* 힌트 초기화 */
   document.getElementById('hnt-body').innerHTML=buildHint(p.a,p.b,stage,p.hard);
   document.getElementById('hnt-body').classList.remove('open');
   document.getElementById('hint-tog').innerHTML='<span>💡</span> 힌트 보기';
 
-  // 선택지 생성
+  /* 선택지 생성 */
   const choices=makeChoices(p.ans,stage,p.hard);
   const grid=document.getElementById('choices');
   grid.innerHTML='';
   ['A','B','C','D'].forEach((ltr,i)=>{
     const btn=document.createElement('button');
     btn.className='ch';btn.dataset.val=choices[i];
-    btn.innerHTML=`<span class="ch-ltr">${ltr}</span><span class="ch-val">${choices[i]}</span>`;
+    btn.innerHTML=`<span class="ch-ltr">${ltr}</span><span class="ch-val">${choices[i]}</span><span class="ch-ico"></span>`;
     btn.onclick=()=>pick(choices[i],btn);
     grid.appendChild(btn);
   });
 
-  // 카드 초기화
+  /* 카드 초기화 */
   document.getElementById('pcard').className='pcard';
   document.getElementById('pfb').className='pfb';
 
-  // 6번째 문제 알림
-  if(cur===5&&stage>1){
+  /* 6번째 문제 알림 (어려운 문제 시작) */
+  if(cur===5&&stage>1&&stage!==5){
     const hb=document.getElementById('g-hb');
     hb.className='g-hb on';
     setTimeout(()=>hb.className='g-hb',2600);
@@ -426,17 +571,23 @@ function pick(val,btn){
   const ok=val===p.ans;
   if(ok)score+=10;
 
-  // 프로그레스
+  /* 프로그레스 */
   document.getElementById('prog').style.width=((cur+1)/10*100)+'%';
 
-  // 버튼 상태
+  /* 버튼 상태 */
   document.querySelectorAll('.ch').forEach(b=>{
     b.disabled=true;
-    if(+b.dataset.val===p.ans)b.classList.add('ok');
+    if(+b.dataset.val===p.ans){
+      b.classList.add('ok');
+      b.querySelector('.ch-ico').textContent='✓';
+    }
   });
-  if(!ok)btn.classList.add('ng');
+  if(!ok){
+    btn.classList.add('ng');
+    btn.querySelector('.ch-ico').textContent='✗';
+  }
 
-  // 카드 피드백
+  /* 카드 피드백 */
   const pcard=document.getElementById('pcard');
   const pfb=document.getElementById('pfb');
   document.getElementById('pfb-ico').textContent=ok?'✅':'❌';
@@ -462,11 +613,16 @@ function showResult(){
 }
 
 function getResult(s,sc){
-  if(s===1){
-    if(sc>=80)return{ico:'🎉',tag:'🌟 훌륭해요!',title:'한 자리 덧셈 완료!',msg:'정말 잘했어요! 2단계도 도전해봐요! 💪',rew:true};
-    return{ico:'😊',tag:'👍 잘했어요!',title:'조금 더 연습해봐요!',msg:'다시 도전해서 2단계에 도전해봐요!',rew:false};
+  const names={1:'한 자리 덧셈',2:'두 자리 덧셈',3:'세 자리 덧셈',4:'네 자리 덧셈',
+               5:'한 자리 뺄셈',6:'두 자리 뺄셈',7:'세 자리 뺄셈',8:'네 자리 뺄셈'};
+  const nexts={1:'2단계',5:'6단계'};
+
+  if(s===1||s===5){
+    const nm=names[s],nx=nexts[s];
+    if(sc>=80)return{ico:'🎉',tag:'🌟 훌륭해요!',title:nm+' 완료!',msg:`정말 잘했어요! ${nx}도 도전해봐요! 💪`,rew:true};
+    return{ico:'😊',tag:'👍 잘했어요!',title:'조금 더 연습해봐요!',msg:`다시 도전해서 ${nx}에 도전해봐요!`,rew:false};
   }
-  const TH={2:80,3:60,4:50};
+  const TH={2:80,3:60,4:50,6:80,7:60,8:50};
   const th=TH[s];
   if(sc>=th)return{ico:'💰',tag:'💰 용돈 받기!',rew:true,title:'대단해요!',
     msg:`<b style="color:#ffc0de;font-size:16px">${sc}점</b> 달성! 기준 ${th}점 이상이에요!<br><br>📣 엄마 아빠한테 이 화면을 보여주고 용돈 받아요! 🎊`};
