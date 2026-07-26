@@ -146,6 +146,16 @@ body{
 .s6{background:linear-gradient(140deg,#29b6f6,#0277bd);box-shadow:0 6px 22px rgba(41,182,246,.3)}
 .s7{background:linear-gradient(140deg,#26c6da,#00838f);box-shadow:0 6px 22px rgba(0,172,193,.3)}
 .s8{background:linear-gradient(140deg,#00acc1,#004d58);box-shadow:0 6px 22px rgba(0,172,193,.3)}
+/* ── 곱셈 단계 색상 ── */
+.s9{background:linear-gradient(140deg,#4ade80,#16a34a);box-shadow:0 6px 22px rgba(22,163,74,.3)}
+.s10{background:linear-gradient(140deg,#34d399,#059669);box-shadow:0 6px 22px rgba(5,150,105,.3)}
+.s11{background:linear-gradient(140deg,#2dd4bf,#0d9488);box-shadow:0 6px 22px rgba(13,148,136,.3)}
+.s12{background:linear-gradient(140deg,#a3e635,#65a30d);box-shadow:0 6px 22px rgba(101,163,13,.3)}
+/* ── 나눗셈 단계 색상 ── */
+.s13{background:linear-gradient(140deg,#fb923c,#ea580c);box-shadow:0 6px 22px rgba(234,88,12,.3)}
+.s14{background:linear-gradient(140deg,#f97316,#c2410c);box-shadow:0 6px 22px rgba(194,65,12,.3)}
+.s15{background:linear-gradient(140deg,#fbbf24,#d97706);box-shadow:0 6px 22px rgba(217,119,6,.3)}
+.s16{background:linear-gradient(140deg,#f59e0b,#b45309);box-shadow:0 6px 22px rgba(180,83,9,.3)}
 
 /* ── 섹션 구분 ── */
 .sec-div{
@@ -260,6 +270,62 @@ body{
       <div class="s-aw">💰 50점 이상 → 용돈</div>
     </button>
   </div>
+
+  <div class="sec-div">✖️ 곱셈</div>
+  <div class="stage-grid">
+    <button class="s-btn s9" onclick="go(9)">
+      <div class="s-num">9단계</div>
+      <div class="s-name">구구단</div>
+      <div class="s-range">2~9 × 2~9</div>
+      <div class="s-aw">💰 80점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s10" onclick="go(10)">
+      <div class="s-num">10단계</div>
+      <div class="s-name">두 자리 × 한 자리</div>
+      <div class="s-range">10~99 × 2~9</div>
+      <div class="s-aw">💰 70점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s11" onclick="go(11)">
+      <div class="s-num">11단계</div>
+      <div class="s-name">세 자리 × 한 자리</div>
+      <div class="s-range">100~999 × 2~9</div>
+      <div class="s-aw">💰 60점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s12" onclick="go(12)">
+      <div class="s-num">12단계</div>
+      <div class="s-name">두 자리 × 두 자리</div>
+      <div class="s-range">10~59 × 10~59</div>
+      <div class="s-aw">💰 50점 이상 → 용돈</div>
+    </button>
+  </div>
+
+  <div class="sec-div">➗ 나눗셈</div>
+  <div class="stage-grid">
+    <button class="s-btn s13" onclick="go(13)">
+      <div class="s-num">13단계</div>
+      <div class="s-name">구구단 나눗셈</div>
+      <div class="s-range">4~81 ÷ 2~9</div>
+      <div class="s-aw">💰 80점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s14" onclick="go(14)">
+      <div class="s-num">14단계</div>
+      <div class="s-name">두 자리 ÷ 한 자리</div>
+      <div class="s-range">10~81 ÷ 2~9</div>
+      <div class="s-aw">💰 70점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s15" onclick="go(15)">
+      <div class="s-num">15단계</div>
+      <div class="s-name">세 자리 ÷ 한 자리</div>
+      <div class="s-range">100~810 ÷ 2~9</div>
+      <div class="s-aw">💰 60점 이상 → 용돈</div>
+    </button>
+    <button class="s-btn s16" onclick="go(16)">
+      <div class="s-num">16단계</div>
+      <div class="s-name">네 자리 ÷ 한 자리</div>
+      <div class="s-range">1000~8100 ÷ 2~9</div>
+      <div class="s-aw">💰 50점 이상 → 용돈</div>
+    </button>
+  </div>
 </div>
 
 <!-- ══════ GAME ══════ -->
@@ -321,7 +387,10 @@ const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 /* ────────────────────────────────────────
    문제 생성
    idx 0~4: 쉬운 / idx 5~9: 어려운
-   stage 1~4: 덧셈 / stage 5~8: 뺄셈
+   stage 1~4:  덧셈
+   stage 5~8:  뺄셈
+   stage 9~12: 곱셈
+   stage 13~16:나눗셈
 ──────────────────────────────────────── */
 function gen(stage,idx){
   const hard=idx>=5;
@@ -336,7 +405,7 @@ function gen(stage,idx){
       case 4:a=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000;b=hard?R(1,9)*1000+R(1,9)*100:R(1,9)*1000;break;
     }
     return{a,b,ans:a+b,hard};
-  } else {
+  } else if(stage<=8){
     /* 뺄셈 — 받아내림 없이 생성 (힌트 자릿수 분해 정확성 보장) */
     switch(stage){
       case 5:
@@ -356,6 +425,38 @@ function gen(stage,idx){
         break;
     }
     return{a,b,ans:a-b,hard};
+
+  }else if(stage<=12){
+    /* 곱셈 */
+    switch(stage){
+      case 9: // 구구단
+        a=hard?R(6,9):R(2,5); b=R(2,9); break;
+      case 10: // 두 자리 × 한 자리
+        a=hard?R(1,9)*10+R(1,9):R(1,9)*10; b=R(2,9); break;
+      case 11: // 세 자리 × 한 자리
+        a=hard?R(1,9)*100+R(1,9)*10:R(1,9)*100; b=R(2,9); break;
+      case 12: // 두 자리 × 두 자리
+        a=hard?R(1,5)*10+R(1,9):R(1,5)*10;
+        b=hard?R(1,5)*10+R(1,9):R(1,5)*10; break;
+    }
+    return{a,b,ans:a*b,hard};
+
+  }else{
+    /* 나눗셈 — 나머지 없이 생성 (몫×제수=피제수) */
+    let q,d; // q=몫(정답), d=제수
+    switch(stage){
+      case 13: // 구구단 나눗셈
+        q=hard?R(6,9):R(2,5); d=R(2,9); break;
+      case 14: // 두 자리 피제수 ÷ 한 자리
+        do{q=R(2,9);d=R(2,9);}while(q*d<10||q*d>99); break;
+      case 15: // 세 자리 피제수 ÷ 한 자리
+        if(!hard){do{q=R(2,9)*10;d=R(2,9);}while(q*d<100||q*d>999);}
+        else{do{q=R(11,99);d=R(2,9);}while(q*d<100||q*d>999);} break;
+      case 16: // 네 자리 피제수 ÷ 한 자리
+        if(!hard){do{q=R(1,9)*100;d=R(2,9);}while(q*d<1000||q*d>9999);}
+        else{do{q=R(101,999);d=R(2,9);}while(q*d<1000||q*d>9999);} break;
+    }
+    return{a:q*d,b:d,ans:q,hard};
   }
 }
 
@@ -363,6 +464,9 @@ function gen(stage,idx){
    4지선다 선택지 생성
 ──────────────────────────────────────── */
 function makeChoices(ans,stage,hard){
+  /* 곱셈·나눗셈은 별도 로직 */
+  if(stage>=9)return makeChoicesMulDiv(ans);
+
   const s=stage<=4?stage:stage-4; /* 뺄셈 단계를 1~4로 정규화 */
   const unit=s===1?1:hard?(s===2?1:s===3?10:100):(s===2?10:s===3?100:1000);
   const big=s===1?1:s===2?10:s===3?100:1000;
@@ -373,9 +477,24 @@ function makeChoices(ans,stage,hard){
   for(const o of offs){
     if(pool.size>=4)break;
     const w=ans+o;
-    if(w>=0)pool.add(w); /* 뺄셈 결과 0 허용 */
+    if(w>=0)pool.add(w);
   }
   for(let i=1;pool.size<4;i++){const w=ans+i*unit;if(!pool.has(w)&&w>=0)pool.add(w);}
+  return[...pool].slice(0,4).sort(()=>Math.random()-.5);
+}
+
+function makeChoicesMulDiv(ans){
+  const pool=new Set([ans]);
+  /* 크기에 맞는 오차 범위 선택 */
+  const step=ans<=20?1:ans<=100?2:ans<=500?5:ans<=2000?10:50;
+  const variants=[step,-step,step*2,-step*2,step*3,-step*3,step*5,-step*5,1,-1,step*4,-step*4];
+  variants.sort(()=>Math.random()-.5);
+  for(const v of variants){
+    if(pool.size>=4)break;
+    const w=ans+v;
+    if(w>0&&!pool.has(w))pool.add(w);
+  }
+  for(let i=1;pool.size<4;i++){if(!pool.has(ans+i))pool.add(ans+i);}
   return[...pool].slice(0,4).sort(()=>Math.random()-.5);
 }
 
@@ -383,7 +502,9 @@ function makeChoices(ans,stage,hard){
    힌트 HTML 생성 (덧셈)
 ──────────────────────────────────────── */
 function buildHint(a,b,stage,hard){
-  if(stage>=5)return buildHintSub(a,b,stage,hard);
+  if(stage>=13)return buildHintDiv(a,b,a/b,stage,hard);
+  if(stage>=9) return buildHintMul(a,b,a*b,stage,hard);
+  if(stage>=5) return buildHintSub(a,b,stage,hard);
   const ans=a+b;
 
   if(stage===1){
@@ -514,6 +635,118 @@ function buildHintSub(a,b,stage,hard){
   return '';
 }
 
+/* ────────────────────────────────────────
+   힌트 HTML 생성 (곱셈)
+──────────────────────────────────────── */
+function buildHintMul(a,b,ans,stage,hard){
+  if(stage===9){
+    /* 구구단: 반복 덧셈(소수단) 또는 구구단 표 */
+    if(b<=4){
+      const terms=Array.from({length:b},()=>a).join(' + ');
+      return `<div class="hdots" style="color:#a7f3d0;font-size:13px">${terms}</div>
+        <div class="harr">↓</div>
+        <div class="hfin">${a} × ${b} = <b>${ans}</b></div>`;
+    }
+    return `<div class="hr"><span class="hlb">${a}단</span><span class="heq">${a}×${b}=<b>${ans}</b></span></div>
+      <div class="hfin">${a} × ${b} = <b>${ans}</b></div>`;
+  }
+  if(stage===10){
+    /* 두 자리 × 한 자리 */
+    if(!hard){
+      const da=a/10;
+      return `<div class="hr"><span class="heq">${a}×${b} = ${da}×${b}×10</span></div>
+        <div class="hr"><span class="heq">${da}×${b} = <b>${da*b}</b></span></div>
+        <div class="harr">↓</div>
+        <div class="hfin">${da*b}×10 = <b>${ans}</b></div>`;
+    }
+    const ta=Math.floor(a/10),oa=a%10,p1=ta*10*b,p2=oa*b;
+    return `<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta*10}×${b}=<b>${p1}</b></span></div>
+      <div class="hr"><span class="hlb">일의 자리</span><span class="heq">${oa}×${b}=<b>${p2}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${p1}+${p2}=<b>${ans}</b></div>`;
+  }
+  if(stage===11){
+    /* 세 자리 × 한 자리 */
+    if(!hard){
+      const da=a/100;
+      return `<div class="hr"><span class="heq">${a}×${b} = ${da}×${b}×100</span></div>
+        <div class="hr"><span class="heq">${da}×${b} = <b>${da*b}</b></span></div>
+        <div class="harr">↓</div>
+        <div class="hfin">${da*b}×100 = <b>${ans}</b></div>`;
+    }
+    const ha=Math.floor(a/100),ta=Math.floor((a%100)/10);
+    const p1=ha*100*b,p2=ta*10*b;
+    return `<div class="hr"><span class="hlb">백의 자리</span><span class="heq">${ha*100}×${b}=<b>${p1}</b></span></div>
+      <div class="hr"><span class="hlb">십의 자리</span><span class="heq">${ta*10}×${b}=<b>${p2}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${p1}+${p2}=<b>${ans}</b></div>`;
+  }
+  if(stage===12){
+    /* 두 자리 × 두 자리 */
+    if(!hard){
+      const da=a/10,db=b/10;
+      return `<div class="hr"><span class="heq">${a}×${b} = ${da}×${db}×100</span></div>
+        <div class="hr"><span class="heq">${da}×${db} = <b>${da*db}</b></span></div>
+        <div class="harr">↓</div>
+        <div class="hfin">${da*db}×100 = <b>${ans}</b></div>`;
+    }
+    const tb=Math.floor(b/10),ob=b%10,p1=a*tb*10,p2=a*ob;
+    return `<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${a}×${tb*10}=<b>${p1}</b></span></div>
+      <div class="hr"><span class="hlb">일의 자리</span><span class="heq">${a}×${ob}=<b>${p2}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${p1}+${p2}=<b>${ans}</b></div>`;
+  }
+  return '';
+}
+
+/* ────────────────────────────────────────
+   힌트 HTML 생성 (나눗셈)
+──────────────────────────────────────── */
+function buildHintDiv(a,b,ans,stage,hard){
+  /* 기본 역산 힌트 (13·14단계 공통) */
+  const base=`<div class="hr"><span class="hlb">역산</span><span class="heq">${b} × ? = ${a}</span></div>
+    <div class="hr"><span class="heq">${b} × ${ans} = <b>${a}</b></span></div>
+    <div class="harr">↓</div>
+    <div class="hfin">${a} ÷ ${b} = <b>${ans}</b></div>`;
+  if(stage<=14)return base;
+
+  if(stage===15){
+    if(!hard){
+      /* 몫이 10의 배수: e.g. 240÷6=40 */
+      const q10=ans/10;
+      return `<div class="hr"><span class="heq">${b}×${q10}=${b*q10}</span></div>
+        <div class="hr"><span class="heq">${b*q10}×10=<b>${a}</b></span></div>
+        <div class="harr">↓</div>
+        <div class="hfin">${a}÷${b}=<b>${ans}</b></div>`;
+    }
+    const ta=Math.floor(ans/10),oa=ans%10,p1=ta*10*b,p2=oa*b;
+    return `<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${b}×${ta*10}=<b>${p1}</b></span></div>
+      <div class="hr"><span class="hlb">일의 자리</span><span class="heq">${b}×${oa}=<b>${p2}</b></span></div>
+      <div class="harr">↓</div>
+      <div class="hfin">${p1}+${p2}=${a}, 정답: <b>${ans}</b></div>`;
+  }
+
+  if(stage===16){
+    if(!hard){
+      /* 몫이 100의 배수: e.g. 2400÷6=400 */
+      const q100=ans/100;
+      return `<div class="hr"><span class="heq">${b}×${q100}=${b*q100}</span></div>
+        <div class="hr"><span class="heq">${b*q100}×100=<b>${a}</b></span></div>
+        <div class="harr">↓</div>
+        <div class="hfin">${a}÷${b}=<b>${ans}</b></div>`;
+    }
+    const ha=Math.floor(ans/100),ta=Math.floor((ans%100)/10),oa=ans%10;
+    const p1=ha*100*b,p2=ta*10*b,p3=oa*b;
+    const sum=[p1,ta?p2:0,oa?p3:0].filter(Boolean);
+    return `<div class="hr"><span class="hlb">백의 자리</span><span class="heq">${b}×${ha*100}=<b>${p1}</b></span></div>
+      ${ta?`<div class="hr"><span class="hlb">십의 자리</span><span class="heq">${b}×${ta*10}=<b>${p2}</b></span></div>`:''}
+      ${oa?`<div class="hr"><span class="hlb">일의 자리</span><span class="heq">${b}×${oa}=<b>${p3}</b></span></div>`:''}
+      <div class="harr">↓</div>
+      <div class="hfin">${sum.join('+')}=${a}, 정답: <b>${ans}</b></div>`;
+  }
+  return base;
+}
+
 /* ── 게임 상태 ── */
 let stage=1,probs=[],cur=0,score=0,canAns=true;
 
@@ -531,7 +764,9 @@ function loadQ(){
   const p=probs[cur];
   document.getElementById('na').textContent=p.a;
   document.getElementById('nb').textContent=p.b;
-  document.getElementById('op-sign').textContent=stage>=5?'−':'+';
+  const OPS={1:'+',2:'+',3:'+',4:'+',5:'−',6:'−',7:'−',8:'−',
+             9:'×',10:'×',11:'×',12:'×',13:'÷',14:'÷',15:'÷',16:'÷'};
+  document.getElementById('op-sign').textContent=OPS[stage]||'+';
   document.getElementById('g-cnt').textContent=(cur+1)+' / 10';
 
   /* 힌트 초기화 */
@@ -613,16 +848,20 @@ function showResult(){
 }
 
 function getResult(s,sc){
-  const names={1:'한 자리 덧셈',2:'두 자리 덧셈',3:'세 자리 덧셈',4:'네 자리 덧셈',
-               5:'한 자리 뺄셈',6:'두 자리 뺄셈',7:'세 자리 뺄셈',8:'네 자리 뺄셈'};
-  const nexts={1:'2단계',5:'6단계'};
+  const names={
+    1:'한 자리 덧셈',  2:'두 자리 덧셈',  3:'세 자리 덧셈',  4:'네 자리 덧셈',
+    5:'한 자리 뺄셈',  6:'두 자리 뺄셈',  7:'세 자리 뺄셈',  8:'네 자리 뺄셈',
+    9:'구구단 곱셈',   10:'두 자리 곱셈', 11:'세 자리 곱셈', 12:'두 자리×두 자리',
+    13:'구구단 나눗셈',14:'두 자리 나눗셈',15:'세 자리 나눗셈',16:'네 자리 나눗셈'
+  };
+  const nexts={1:'2단계',5:'6단계',9:'10단계',13:'14단계'};
 
-  if(s===1||s===5){
+  if(s===1||s===5||s===9||s===13){
     const nm=names[s],nx=nexts[s];
     if(sc>=80)return{ico:'🎉',tag:'🌟 훌륭해요!',title:nm+' 완료!',msg:`정말 잘했어요! ${nx}도 도전해봐요! 💪`,rew:true};
     return{ico:'😊',tag:'👍 잘했어요!',title:'조금 더 연습해봐요!',msg:`다시 도전해서 ${nx}에 도전해봐요!`,rew:false};
   }
-  const TH={2:80,3:60,4:50,6:80,7:60,8:50};
+  const TH={2:80,3:60,4:50,6:80,7:60,8:50,10:70,11:60,12:50,14:70,15:60,16:50};
   const th=TH[s];
   if(sc>=th)return{ico:'💰',tag:'💰 용돈 받기!',rew:true,title:'대단해요!',
     msg:`<b style="color:#ffc0de;font-size:16px">${sc}점</b> 달성! 기준 ${th}점 이상이에요!<br><br>📣 엄마 아빠한테 이 화면을 보여주고 용돈 받아요! 🎊`};
